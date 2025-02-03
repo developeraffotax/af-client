@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DataGrid,   GridColDef } from '@mui/x-data-grid';
 import { createClient } from "@supabase/supabase-js";
+import { createSupabaseClient } from "../../utils/supabaseClient";
 
 // const rows2: GridRowsProp = [
 //   { id: 1, company_name: 'Hello', sic_codes: 'World', registered_in: 'England & Wales' },
@@ -27,16 +28,18 @@ const columns: GridColDef[] = [
 ];
 
 
-    const supabase = createClient("https://yatyzfexgpwmtcvtkiti.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdHl6ZmV4Z3B3bXRjdnRraXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyMjMwMTEsImV4cCI6MjA1MDc5OTAxMX0.43xEcnwZK_GkI3CrPe58FHndmgAzLA0vECwnoS_TGVE")
+    const supabase = createSupabaseClient()
 
 const Companies = () => {
 
 
     const [rows, setRows] = useState<Row[]>([])
 
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
+    console.log(isLoading)
     const getCompaniesData = useCallback(async() => {
-
+        setIsLoading(true)
         const { data, error } = await supabase.from("company_info").select();
 
         console.log(data)
@@ -51,7 +54,7 @@ const Companies = () => {
                     registered_in: el.registered_in
                 }
             })
-
+            setIsLoading(false)
             setRows(mappedData)
         }
 
@@ -76,7 +79,7 @@ const Companies = () => {
 
 
   return  <div style={{   width: '100%' }}>
-  <DataGrid rows={rows} columns={columns} />
+  <DataGrid rows={rows} columns={columns} loading={isLoading}/>
 </div>
 };
 
