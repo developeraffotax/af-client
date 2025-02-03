@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import  { useCallback, useEffect, useState } from "react";
 import { DataGrid,   GridColDef } from '@mui/x-data-grid';
-import { createClient } from "@supabase/supabase-js";
+ 
 import { createSupabaseClient } from "../../utils/supabaseClient";
 
 // const rows2: GridRowsProp = [
